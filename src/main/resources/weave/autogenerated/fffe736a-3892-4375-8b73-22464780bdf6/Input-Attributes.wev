@@ -1,0 +1,31 @@
+%dw 2.0
+
+type auto_fffe736a_3892_4375_8b73_22464780bdf6_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    firstName?: String, 
+    lastNmae?: String, 
+    email?: String, 
+    phone?: String, 
+    designation?: String, 
+    salary?: Number, 
+    joiningDate?: String
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {| empId: Number |}, 
+  version: String, 
+  localAddress: String
+|}
+

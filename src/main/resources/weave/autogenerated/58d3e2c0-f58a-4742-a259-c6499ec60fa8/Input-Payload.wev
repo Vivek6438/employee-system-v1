@@ -1,0 +1,14 @@
+%dw 2.0
+
+type auto_58d3e2c0_f58a_4742_a259_c6499ec60fa8_Input_Payload = {
+  empId: Number, 
+  firstName: String, 
+  phone: String, 
+  lastNmae: String, 
+  joiningDate: String, 
+  designation: String, 
+  salary: Number, 
+  email: String, 
+  _?: Any
+}
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="employee-deleteSub_Flow" doc:id="795688b5-9d81-4d9c-8eb6-7465b9a70d1c" >
+		<logger level="INFO" doc:name="start Logger" doc:id="70fa6627-8b8f-48ab-929d-1539cc2391c6" message="API is started"/>
+		<ee:transform doc:name="Initaizing parameter" doc:id="ccf11beb-d853-41da-9d50-4be26bae3257" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="a" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.uriParams.empId]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<http:request method="DELETE" doc:name="Calling Backed API" doc:id="608c072c-8655-4c99-8c96-361afb076774" config-ref="HTTP_Request_configuration_backend" path="/api/employees/{empId}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"empId" : vars.a
+}]]]></http:uri-params>
+		</http:request>
+		<ee:transform doc:name="Response" doc:id="fbdf1573-2eed-4d1e-8b06-0d9c41f09306" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End Logger" doc:id="76fe5376-ab5e-4b66-9dc7-011b9933938f" message="Api is successfully Called"/>
+	</sub-flow>
+</mule>

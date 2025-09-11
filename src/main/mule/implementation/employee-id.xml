@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="employee-idSub_Flow" doc:id="fffe736a-3892-4375-8b73-22464780bdf6" >
+		<logger level="INFO" doc:name="Logger" doc:id="b7698021-c994-4173-b726-995b9e553485" />
+		<ee:transform doc:name="Initialzing parameter" doc:id="5af9e27d-a979-46e3-844e-d4e43fe8a402">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="empId"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.uriParams.empId]]></ee:set-variable>
+				<ee:set-variable variableName="firstName"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.firstName]]></ee:set-variable>
+				<ee:set-variable variableName="lastNmae"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.lastNmae]]></ee:set-variable>
+				<ee:set-variable variableName="email"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.email]]></ee:set-variable>
+				<ee:set-variable variableName="phone"><![CDATA[%dw 2.0
+output application/json
+---
+ attributes.queryParams.phone]]></ee:set-variable>
+				<ee:set-variable variableName="designation"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.designation]]></ee:set-variable>
+				<ee:set-variable variableName="salary"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.salary]]></ee:set-variable>
+				<ee:set-variable variableName="joiningDate"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.joiningDate]]></ee:set-variable>
+				<ee:set-variable variableName="cleint-id"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.headers.'cleint-id'
+]]></ee:set-variable>
+				<ee:set-variable variableName="cleint-secret"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.headers.'cleint-secret']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="aecc0b28-d1a3-4937-bc34-5e54c608c654" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="querybody" ><![CDATA[%dw 2.0
+output application/json skipNullOn = "everywhere"
+---
+{
+	"firstName" : vars.firstName,
+	"lastNmae" : vars.lastNmae,
+	"email" :  vars.email,
+	"phone" : vars.phone,
+	"designation" : vars.designation,
+	"salary" : vars.salary,
+	"joiningDate" :  vars.joiningDate,
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="before call request Logger" doc:id="029ac9f9-e1a1-4b50-910f-da97c66466db" message="before call request Logger"/>
+		<http:request method="GET" doc:name="Request" doc:id="1ae49cb7-2611-4235-a206-7c294c139736" config-ref="HTTP_Request_configuration_backend" path="/api/employees/{empId}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"empId" : vars.empId
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[vars.querybody]]]></http:query-params>
+		</http:request>
+		<logger level="INFO" doc:name="after call Logger" doc:id="704537d3-128c-4906-a024-89ed70fc1fac" message="after call request"/>
+		<ee:transform doc:name="Transform Message" doc:id="1389c62a-1e76-45de-aaa1-8e631eac87c8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map{
+	"empId": $.emp_id,
+	"firstName": $.first_name,
+	"lastNmae": $.last_name,
+	"email": $.email,
+	"phone": $.phone,
+	"designation": $.designation,
+	"salary": $.salary,
+	"joiningDate": $.joining_date
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

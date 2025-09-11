@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<sub-flow name="onboardingSub_Flow" doc:id="58d3e2c0-f58a-4742-a259-c6499ec60fa8" >
+		<logger level="INFO" doc:name="Start Logger" doc:id="dee615f5-f680-4b0c-b986-7353f3e0c505" message="API is Started sucessfully"/>
+		<ee:transform doc:name="inputPayload" doc:id="081c64e2-0284-4530-b53b-e21f8ecf2211" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Calling Backend API" doc:id="9917f4ea-5ab8-435e-81fb-4b85521504d5" config-ref="HTTP_Request_configuration_backend" path="/api/employeeOnboarding"/>
+		<ee:transform doc:name="Response" doc:id="a152fe7c-4dec-4117-870d-4f11ddf04f19" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End logger" doc:id="4a34cbba-ae98-48e1-9716-768a2add69f0" />
+	</sub-flow>
+</mule>
