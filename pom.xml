@@ -29,7 +29,7 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
-				<configuration>
+<configuration>
     <cloudHubDeployment>
         <uri>https://anypoint.mulesoft.com</uri>
         <muleVersion>${mule.version}</muleVersion>
@@ -38,8 +38,8 @@
 
         <environment>${env}</environment>
         <applicationName>${appname}</applicationName>
-        <businessGroup>${Infosys Limited}</businessGroup>
-        <workerType>${core}</workerType>
+        <businessGroup>${business}</businessGroup>
+        <workerType>${vCore}</workerType>
         <workers>${workers}</workers>
         <objectStoreV2>true</objectStoreV2>
     </cloudHubDeployment>
